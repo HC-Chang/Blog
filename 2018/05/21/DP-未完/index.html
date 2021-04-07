@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Suche...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="基本原則SOLID  Single Responsibility Principle  單一功能原則   一個變因   Open Close Principle  開閉原則   擴充開放 修改封閉   Liskov Substitution Principle  里氏代換原則   子類別可替換父類別被使用   Interface Segregation Principle  接口隔離原則   降低">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Design Pattern">
+<meta property="og:url" content="http://example.com/2018/05/21/DP-%E6%9C%AA%E5%AE%8C/index.html">
+<meta property="og:site_name" content="HC-Chang&#39;s Blog">
+<meta property="og:description" content="基本原則SOLID  Single Responsibility Principle  單一功能原則   一個變因   Open Close Principle  開閉原則   擴充開放 修改封閉   Liskov Substitution Principle  里氏代換原則   子類別可替換父類別被使用   Interface Segregation Principle  接口隔離原則   降低">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-05-21T12:14:00.000Z">
+<meta property="article:modified_time" content="2018-07-26T13:05:22.000Z">
+<meta property="article:author" content="HC-Chang">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2018/05/21/DP-%E6%9C%AA%E5%AE%8C/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh'
+  };
+</script>
+<title>Design Pattern | HC-Chang's Blog</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Navigationsleiste an/ausschalten" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">HC-Chang's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Inhaltsverzeichnis
+        </li>
+        <li class="sidebar-nav-overview">
+          Übersicht
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%89%87"><span class="nav-number">1.</span> <span class="nav-text">基本原則</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Creational-%E5%89%B5%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">Creational - 創建型模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Structural-%E7%B5%90%E6%A7%8B%E5%9E%8B%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">Structural - 結構型模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Behavioral-%E8%A1%8C%E7%82%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">Behavioral - 行為型模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#J2EE-%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">J2EE 模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E5%9F%B7%E8%A1%8C%E7%B7%92%E6%A8%A1%E5%BC%8F"><span class="nav-number">6.</span> <span class="nav-text">多執行緒模式</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">HC-Chang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">Artikel</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">Kategorien</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/05/21/DP-%E6%9C%AA%E5%AE%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="HC-Chang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HC-Chang's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Design Pattern
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Veröffentlicht am</span>
+
+      <time title="Erstellt: 2018-05-21 20:14:00" itemprop="dateCreated datePublished" datetime="2018-05-21T20:14:00+08:00">2018-05-21</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Bearbeitet am</span>
+        <time title="Geändert am: 2018-07-26 21:05:22" itemprop="dateModified" datetime="2018-07-26T21:05:22+08:00">2018-07-26</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">in</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Resource/" itemprop="url" rel="index"><span itemprop="name">Resource</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="基本原則"><a href="#基本原則" class="headerlink" title="基本原則"></a>基本原則</h1><p><strong>SOLID</strong></p>
+<ul>
+<li><p>Single Responsibility Principle</p>
+<blockquote>
+<p>單一功能原則</p>
+</blockquote>
+<ul>
+<li>一個變因</li>
+</ul>
+</li>
+<li><p>Open Close Principle</p>
+<blockquote>
+<p>開閉原則</p>
+</blockquote>
+<ul>
+<li>擴充開放</li>
+<li>修改封閉</li>
+</ul>
+</li>
+<li><p>Liskov Substitution Principle</p>
+<blockquote>
+<p>里氏代換原則</p>
+</blockquote>
+<ul>
+<li>子類別可替換父類別被使用</li>
+</ul>
+</li>
+<li><p>Interface Segregation Principle</p>
+<blockquote>
+<p>接口隔離原則</p>
+</blockquote>
+<ul>
+<li>降低類別相依性、耦合性</li>
+</ul>
+</li>
+<li><p>Dependence Inversion Principle</p>
+<blockquote>
+<p>依賴反轉原則</p>
+</blockquote>
+<ul>
+<li>將物件需求抽象化成介面後再給其他物件繼承使用</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li><p>Demeter Principle</p>
+<blockquote>
+<p>迪米特原則</p>
+</blockquote>
+<ul>
+<li>物件設計上應減少相互作用，使功能模組相對獨立</li>
+</ul>
+</li>
+<li><p>Composite Reuse Principle </p>
+<blockquote>
+<p>合成覆用原則</p>
+</blockquote>
+<ul>
+<li>使用合成、減少繼承</li>
+</ul>
+</li>
+</ul>
+<h1 id="Creational-創建型模式"><a href="#Creational-創建型模式" class="headerlink" title="Creational - 創建型模式"></a>Creational - 創建型模式</h1><ul>
+<li>Simple Factory Pattern - 簡單工廠模式</li>
+<li>Abstract Factory Pattern - 抽象工廠模式</li>
+<li>Singleton Pattern - 單例模式</li>
+<li>Builder Pattern - 建造者模式</li>
+<li>Prototype Pattern - 原型模式</li>
+</ul>
+<h1 id="Structural-結構型模式"><a href="#Structural-結構型模式" class="headerlink" title="Structural - 結構型模式"></a>Structural - 結構型模式</h1><ul>
+<li>Adapter Pattern - 轉接器模式</li>
+<li>Bridge Pattern - 橋接模式</li>
+<li>Filter、Criteria Pattern - 過濾器模式</li>
+<li>Composite Pattern - 組合模式</li>
+<li>Decorator Pattern - 裝飾者模式</li>
+<li>Facade Pattern - 表象模式</li>
+<li>Flyweight Pattern - 享元模式</li>
+<li>Proxy Pattern - 代理模式</li>
+</ul>
+<h1 id="Behavioral-行為型模式"><a href="#Behavioral-行為型模式" class="headerlink" title="Behavioral - 行為型模式"></a>Behavioral - 行為型模式</h1><ul>
+<li>Chain of Responsibility Pattern - 責任鏈模式</li>
+<li>Command Pattern - 命令模式</li>
+<li>Interpreter Pattern - 解釋器模式</li>
+<li>Iterator Pattern - 迭代器模式</li>
+<li>Mediator Pattern - 中介者模式</li>
+<li>Mementor Pattern - 備忘錄模式</li>
+<li>Observer Pattern - 觀察者模式</li>
+<li>State Pattern - 狀態模式</li>
+<li>Null Object Pattern - 空對象模式</li>
+<li>Strategy Pattern - 策略模式</li>
+<li>Template Method Pattern - 樣板方法模式</li>
+<li>Visitor Pattern - 訪問者模式</li>
+</ul>
+<h1 id="J2EE-模式"><a href="#J2EE-模式" class="headerlink" title="J2EE 模式"></a>J2EE 模式</h1><ul>
+<li>MVC Pattern - MVC 模式</li>
+<li>Business Delegate Pattern - 業務代表模式</li>
+<li>Composite Entity Pattern - 組合實體模式</li>
+<li>Data Access Object Pattern - 數據訪問對象模式</li>
+<li>Front Controller Pattern - 前端控制器模式</li>
+<li>Intercepting Filter Pattern - 攔截過濾器模式</li>
+<li>Service Locator Pattern - 服務定位器模式</li>
+<li>Transfer Object Pattern - 傳輸對象模式</li>
+</ul>
+<h1 id="多執行緒模式"><a href="#多執行緒模式" class="headerlink" title="多執行緒模式"></a>多執行緒模式</h1><ul>
+<li><a target="_blank" rel="noopener" href="http://monkeycoding.com/?p=958">阿洲的程式教學 - C#</a></li>
+<li><a target="_blank" rel="noopener" href="https://xyz.cinc.biz/2013/08/blog-post_16.html">XYZ的筆記本 - C#</a></li>
+<li><a target="_blank" rel="noopener" href="https://openhome.cc/Gossip/DesignPattern/index.html">非關語言: 設計模式 - JAVA</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.runoob.com/design-pattern/design-pattern-intro.html">runoob.com - JAVA</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/05/21/%E5%A4%A7%E8%A9%B1DP-%E6%9C%AA%E5%AE%8C/" rel="prev" title="大話DP - 筆記 - 未完">
+                  <i class="fa fa-chevron-left"></i> 大話DP - 筆記 - 未完
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/06/23/Tmux/" rel="next" title="Tmux">
+                  Tmux <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HC-Chang</span>
+</div>
+  <div class="powered-by">Erstellt mit  <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
